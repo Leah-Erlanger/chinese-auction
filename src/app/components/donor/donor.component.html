@@ -1,0 +1,106 @@
+<h1>ניהול תורמים</h1>
+<p-toast></p-toast>
+
+<div class="card" >
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="הוספת תורם" icon="pi pi-plus" class="p-button-success p-mr-2"
+                (click)="openNew()"></button>
+            <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedDonors()"
+                [disabled]="!SelectedDonors || !SelectedDonors.length"></button>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+            <p-fileUpload mode="basic" accept="Image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import"
+                class="p-mr-2 p-d-inline-block"></p-fileUpload>
+
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt [value]="donors$" [rows]="5
+      " [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']"
+        [(selection)]="SelectedDonors" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-ai-center p-jc-between">
+
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target, 'contains')"
+                        placeholder="חיפוש" />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem"><p-tableHeaderCheckbox />
+                <th pSortableColumn="nameDonor">שם תורם <p-sortIcon field="nameDonor"></p-sortIcon></th>
+                <th pSortableColumn="emailDonor">מייל<p-sortIcon field="emailDonor"></p-sortIcon></th>
+
+                <th pSortableColumn="phoneDonor">טלפון<p-sortIcon field="phoneDonor"></p-sortIcon></th>
+                <th>רשימת תרומות</th>
+                <th></th>
+
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-donor>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="donor"></p-tableCheckbox>
+                </td>
+
+                <td>{{donor.nameDonor}}</td>
+                <td>{{donor.emailDonor}}</td>
+
+                <td>{{donor.phoneDonor}}</td>
+                @for (g of donor.giftListForDonor; track $index){
+                <h5>
+                    <img [src]="''+g.image" [alt]="g.nameGift" width="30" class="shadow-4"
+                         />                {{g.nameGift}}*  
+                 </h5>
+             
+                }
+                
+                <td>
+                    
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                        (click)="editDonor(donor)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                        (click)="deleteDonor(donor)"></button>
+                </td>
+            </tr>
+        </ng-template>
+
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="donorDialog" [style]="{width: '450px'}" header="Donor Details" [modal]="true"
+    styleClass="p-fluid">
+    <ng-template pTemplate="content">
+
+        <div class="p-field">
+            <label for="name">שם תורם</label>
+            <input type="text" pInputText id="name" [(ngModel)]="donor.nameDonor" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !donor.nameDonor">Name is required.</small>
+        </div>
+        <div class="p-field">
+            <label for="emailDonor">מייל</label>
+            <textarea id="emailDonor" pInputTextarea [(ngModel)]="donor.emailDonor" required rows="1"
+                cols="10"></textarea>
+        </div>
+        <div class="p-formgrid p-grid">
+
+        </div>
+
+        <label for="phoneDonor">טלפון</label>
+        <input type="text" pInputText id="phoneDonor" [(ngModel)]="donor.phoneDonor" required autofocus />
+        <small class="p-invalid" *ngIf="submitted && !donor.phoneDonor">Name is required.</small>
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveDonor()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

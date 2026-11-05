@@ -1,0 +1,175 @@
+<h1>ניהול מתנות</h1>
+<p-toast></p-toast>
+<!-- @for(b of gifts$ ; track b){ -->
+<div class="card" dir="rtl">
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="right">
+
+            <button pButton pRipple label="הוספת מתנה" icon="pi pi-plus" class="p-button-success p-mr-2"
+            (click)="openNew()"></button>
+
+            <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedGifts()"
+                [disabled]="!SelectedGifts || !SelectedGifts.length"></button>
+        </ng-template>
+
+        <ng-template pTemplate="left">
+            <p-fileUpload mode="basic" accept="Image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import"
+                class="p-mr-2 p-d-inline-block"></p-fileUpload>
+           
+            <!-- <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button> -->
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt [value]="gifts$" [rows]="5" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']"
+        [(selection)]="SelectedGifts" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                <!-- <h5 class="p-m-0">Manage Gifts</h5> -->
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target, 'contains')"
+                        placeholder="...חיפוש" />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem"><p-tableHeaderCheckbox />
+                <th pSortableColumn="nameGift">שם מתנה<p-sortIcon field="nameGift"></p-sortIcon></th>
+                <th pSortableColumn="description">תיאור מוצר <p-sortIcon field="description"></p-sortIcon></th>
+                <th pSortableColumn="Image">תמונה </th>
+                <th pSortableColumn="priceTicket">מחיר <p-sortIcon field="priceTicket"></p-sortIcon></th>
+                <th pSortableColumn="categoryName">קטגוריה <p-sortIcon field="categoryName"></p-sortIcon></th>
+                <th pSortableColumn="donorName">שם התורם <p-sortIcon field="donorName"></p-sortIcon></th>
+
+                <th></th>
+
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-gift>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="gift"></p-tableCheckbox>
+                </td>
+                <!-- <td>
+                    <p-tableCheckbox [value]="category"></p-tableCheckbox>
+                </td> -->
+
+                <!-- <td>{{gift.Id}}</td> -->
+                <!-- <th style="width: 3rem">
+                     <p-tableHeaderCheckbox/>
+                      -->
+                <td>{{gift.nameGift}}</td>
+                <td>{{gift.description}}</td>
+                <td>
+                    <img [src]="''+gift.image" [alt]="gift.nameGift" width="100" class="shadow-4"
+                        style="justify-content: center;" />
+                </td>
+                <td>{{gift.priceTicket | currency:'ILS'}}</td>
+                <td>{{gift.categoryName}}</td>
+                <td>{{gift.donorName}}</td>
+
+                <!-- <td><p-rating [ngModel]="gift.rating" [readonly]="true" [cancel]="false"></p-rating></td> -->
+                <!-- <td><span [class]="'gift status-' + gift.inventoryStatus.toLowerCase()">{{gift.inventoryStatus}}</span></td> -->
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                        (click)="editGift(gift)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                        (click)="deleteGift(gift)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <!-- <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                In total there are {{gifts$ ? gifts$.length : 0 }} gifts$.
+            </div>
+        </ng-template> -->
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="giftDialog" [style]="{width: '450px'}" header="פרטי מתנה" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+
+        <!-- <td>
+            <label for="name">Image</label>
+            <img [src]="''+gift.image" [alt]="gift.nameGift" width="100" class="shadow-4"
+                style="justify-content: center;" />
+        </td> -->
+        <div class="p-field">
+            <label for="name">תמונה</label>
+            <input type="text" pInputText id="image" [(ngModel)]="gift.image" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !gift.image">Name is required.</small>
+        </div>
+        <div class="p-field">
+            <label for="name">שם מתנה</label>
+            <input type="text" pInputText id="name" [(ngModel)]="gift.nameGift" required autofocus />
+            <small  class="p-invalid" *ngIf="submitted && !gift.nameGift">Name is required.</small>
+        </div>
+        <div class="p-field">
+            <label for="Description">תיאור מוצר</label>
+            <textarea id="Description" pInputTextarea [(ngModel)]="gift.description" required rows="3"
+                cols="20"></textarea>
+        </div>
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <label for="priceTicket">מחיר</label>
+                <p-inputNumber id="priceTicket" [(ngModel)]="gift.priceTicket" mode="currency" currency="ILS"
+                    locale="en-US"></p-inputNumber>
+            </div>
+            <!-- <div class="p-field p-col">
+                  <label for="quantity">Quantity</label>
+                  <p-inputNumber id="quantity" [(ngModel)]="gift.quantity"></p-inputNumber>
+              </div> -->
+        </div>
+        <div class="p-field">
+            <label class="p-mb-3">בחירת קטגוריה</label>
+            <div class="p-formgrid p-grid">
+                
+                    @for (c of category2; track $index){
+                    <div class="p-field-radiobutton p-col-6"icon="pi pi-plus">
+                        <p-radioButton id="category1" name="category" value={{c}}
+                            [(ngModel)]="gift.categoryName" ></p-radioButton>
+                        <label for="category1">{{c}}</label>
+                        
+                    </div>
+                    
+                    }
+                    <p-button id="category1" name="category"
+                    [(ngModel)]="gift.categoryName"  (onClick)="openNewCategory()">NewCategory</p-button>
+                    <!-- <p-button label="NewCategory" icon="pi pi-plus" class="mr-2" (onClick)="openNewCategory()" /> -->
+            </div>
+        </div>
+        <div class="field">
+            <label class="p-mb-3">שם התורם</label>
+            <p-dropdown [(ngModel)]="gift.donorName" inputId="donorName" [options]="donors2">
+
+                <!-- <ng-template let-option pTemplate="item">
+                    <p-tag [value]="donorName"/>
+                </ng-template> -->
+            </p-dropdown>
+        </div>
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="ביטול" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="שמירה" icon="pi pi-check" class="p-button-text" (click)="saveGift()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="categoryDialog" [style]="{width: '450px'}" header="Category" [modal]="true" styleClass="p-fluid">
+    <div class="p-field">
+        <label for="name">שם קטגוריה</label>
+        <input type="text" pInputText id="name" required autofocus />
+        <!-- <h1>{{category}}</h1> -->
+        <small class="p-invalid" *ngIf="submitted && !category">Name is required.</small>
+    </div>
+    <ng-template pTemplate="footer">
+
+        <!-- <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog1()"></button> -->
+        <button pButton pRipple label="שמירה" icon="pi pi-check" class="p-button-text" (click)="saveCategory()"></button>
+    </ng-template>
+
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

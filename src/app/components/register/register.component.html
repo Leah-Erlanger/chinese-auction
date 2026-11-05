@@ -1,0 +1,55 @@
+<div class="register-container">
+  <div class="card">
+    <h2 class="register-title">Register</h2>
+    <div class="p-fluid form-grid">
+      <div class="field">
+        <label for="nameCustomer">Username</label>
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+            <i class="pi pi-user"></i>
+          </span>
+          <input pInputText id="nameCustomer" type="text" [(ngModel)]="register.nameCustomer" placeholder="Username" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="emailCustomer">Email</label>
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+            <i class="pi pi-envelope"></i>
+          </span>
+          <input pInputText id="emailCustomer" type="email" [(ngModel)]="register.emailCustomer" placeholder="Email" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+            <i class="pi pi-lock"></i>
+          </span>
+          <input pInputText id="password" type="password" [(ngModel)]="register.password" placeholder="Password" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="phoneCustomer">Phone</label>
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+            <i class="pi pi-phone"></i>
+          </span>
+          <input pInputText id="phoneCustomer" type="text" [(ngModel)]="register.phoneCustomer" placeholder="Phone" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="adress">Address</label>
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+            <i class="pi pi-map-marker"></i>
+          </span>
+          <input pInputText id="adress" type="text" [(ngModel)]="register.adress" placeholder="Address" />
+        </div>
+      </div>
+      <div class="field">
+        <button pButton label="Sign Up" icon="pi pi-user-plus" class="register-button" (click)="Register()"></button>
+      </div>
+    </div>
+  </div>
+</div>

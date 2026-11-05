@@ -1,0 +1,132 @@
+<div class="div">
+    @if(flag==true){
+    <div class="div2">
+        <div class="div2">
+            <p-button (click)="flag=false" icon="pi pi-shopping-cart"
+                class="flex-auto md:flex-initial white-space-nowrap" label="סגירה" />
+            <p-button (click)="buy(3)" class="flex-auto md:flex-initial white-space-nowrap" label="לתשלום ויציאה" />
+        </div>
+        <p-orderList dir="rtl" [value]="product" [listStyle]="{ height: '25rem' }" [listStyle]="{ width: '15rem' }"
+            header="הסל שלך">
+            <ng-template let-product pTemplate="item">
+
+                <div class="flex flex-wrap p-2 align-items-center gap-3">
+                    <img [src]="product.image" [alt]="product.name" style="width: 100px;" />
+                    <div class="flex-1 flex flex-column gap-2">
+
+                        <span class="font-bold">{{ product.nameGift }}</span>
+                        <div class="flex align-items-center gap-2">
+                            <i class="pi pi-tag text-sm"></i>
+                            <!-- <span>
+                                {{ product.description }}
+                            </span> -->
+                        </div>
+
+                    </div>
+                    <span class="font-bold text-900">
+                        {{ product.priceTicket | currency:'ILS'}}
+                    </span> <br>
+
+                </div>
+                <button class="pi pi-trash" (click)="delete(product.id)">מחיקת מוצר מהסל</button>
+            </ng-template>
+
+        </p-orderList>
+    </div>
+    }
+
+    <div class="card" dir="rtl">
+        <p-button (click)="flag=true" icon="pi pi-shopping-cart" class="flex-auto md:flex-initial white-space-nowrap"
+            label=" לסל שלך" />
+        <p-dataView #dv [value]="gifts$()" [layout]="layout">
+            <ng-template pTemplate="header">
+                <div class="flex justify-content-end">
+                    <p-dataViewLayoutOptions />
+                </div>
+            </ng-template>
+            <ng-template pTemplate="list" let-gifts>
+                <div class="grid grid-nogutter">
+                    <div class="col-12" *ngFor="let item of gifts; let first = first" class="col-12">
+                        <div class="flex flex-column sm:flex-row sm:align-items-center p-4 gap-3"
+                            [ngClass]="{ 'border-top-1 surface-border': !first }">
+                            <div class="md:w-10rem relative">
+                                <img class="block xl:block mx-auto border-round w-full" [src]="item.image"
+                                    [alt]="item.name" style="width: 500px;" />
+                            </div>
+                            <div
+                                class="flex flex-column md:flex-row justify-content-between md:align-items-center flex-1 gap-4">
+                                <div
+                                    class="flex flex-row md:flex-column justify-content-between align-items-start gap-2">
+                                    <div>
+                                        <span class="font-medium text-secondary text-sm"
+                                            style="background-color: rgb(212, 233, 24);">{{ item.categoryName }}</span>
+
+                                        <div class="text-lg font-medium text-900 mt-2">{{ item.nameGift }}</div>
+                                        <div class="text-lg font-medium text-900 mt-1">{{ item.description }}</div>
+                                        <div class="surface-0 flex align-items-center gap-2 justify-content-center py-1 px-2"
+                                            style="border-radius: 30px; box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.04), 0px 1px 2px 0px rgba(0, 0, 0, 0.06)">
+                                            <span class="text-900 font-medium text-sm"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-column md:align-items-end gap-5">
+                                    <span class="text-xl font-semibold text-900">{{ item.priceTicket |
+                                        currency:'ILS'}}</span>
+                                    <div class="flex flex-row-reverse md:flex-row gap-2">
+                                        <!-- <p-dropdown [options]="arr" [(ngModel)]="item.count" optionLabel="label" placeholder="0" /> -->
+                                        <p-button (click)="addToBasket(item.id)" icon="pi pi-shopping-cart"
+                                            class="flex-auto md:flex-initial white-space-nowrap" label="הוספה לסל"
+                                            [disabled]="item.inventoryStatus === 'OUTOFSTOCK'" />
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template let-gift pTemplate="grid" let-gifts>
+                <div class="grid grid-nogutter">
+                    <div class="col-12 sm:col-6 md:col-4 xl:col-3 p-2" *ngFor="let gift of gifts">
+                        <div class="p-4 border-1 surface-border surface-card border-round flex flex-column">
+                            <div class="surface-50 flex justify-content-center border-round p-3">
+                                <div class="relative mx-auto">
+                                    <img class="border-round w-full" [src]="gift.image" [alt]="gift.nameGift"
+                                        style="width: 300px; height: 230px;" /><span
+                                        class="font-medium text-secondary text-sm"
+                                        style="background-color: rgb(212, 233, 24); font-size: 90px;">{{
+                                        gift.categoryName }}</span>
+                                </div>
+                            </div>
+                            <div class="pt-4">
+                                <div class="flex flex-row justify-content-between align-items-start gap-2">
+                                    <div>
+                                        <!-- <span class="font-medium text-secondary text-sm">{{ gift.donor }}</span> -->
+                                        <div class="text-lg font-medium text-900 mt-1">{{ gift.nameGift }}</div>
+                                    </div>
+                                </div>
+                                <!-- <div class="flex flex-row justify-content-between align-items-start gap-2"> -->
+                                <!-- <div> -->
+                                <!-- <span class="font-medium text-secondary text-sm">{{ gift.donor }}</span> -->
+                                <div class="text-lg font-medium text-900 mt-1">{{ gift.description }}</div>
+                                <!-- </div> -->
+                                <!-- </div> -->
+                                <!-- <div class="flex flex-column gap-4 mt-4"> -->
+                                <span class="text-2xl font-semibold">{{gift.priceTicket | currency:'ILS'}}</span>
+                                <div class="flex gap-2">
+                                    <!-- <p-dropdown [options]="arr" [(ngModel)]="gift.count" optionLabel="label" placeholder="0" /> -->
+                                    <p-button (click)="addToBasket(gift.id)"
+                                        class="flex-auto md:flex-initial white-space-nowrap" label=" הוספה לסל "
+                                        icon="pi pi-shopping-cart" [disabled]="gift.inventoryStatus === 'OUTOFSTOCK'" />
+                                    <!-- <p-button icon="pi pi-heart" [outlined]="true" /> -->
+
+                                    <!-- </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </p-dataView>
+    </div>
+</div>

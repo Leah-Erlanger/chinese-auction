@@ -1,0 +1,112 @@
+/* עיצוב הכרטיס */
+.login-signup-container {
+    max-width: 600px; /* הרחבת הכרטיס */
+    margin: 0 auto;
+    padding: 40px; /* הגדלת ריווח פנימי */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 15px; /* פינות מעוגלות יותר */
+    background-color: #ffffff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* חלוקה לטורים */
+.content-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px; /* ריווח בין החלקים */
+}
+
+/* עיצוב צד כניסה */
+.login-section {
+    width: 45%; /* הרחבת רוחב */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* הגדלת רווחים בין האלמנטים */
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* הגדלת רווח בין כיתוב לשדה */
+}
+
+.input-label {
+    font-size: 16px; /* הגדלת פונט */
+    color: #333;
+}
+
+.input-field {
+    padding: 12px; /* שדה גדול יותר */
+    border: 1px solid #ffffff;
+    border-radius: 6px;
+    font-size: 16px; /* טקסט גדול יותר */
+    width: 100%;
+}
+
+.login-button {
+    background-color: #000;
+    color: #fff;
+    padding: 12px; /* כפתור גדול יותר */
+    border: none;
+    border-radius: 6px;
+    font-size: 16px; /* פונט גדול יותר */
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+}
+
+.login-button:hover {
+    background-color: #333;
+}
+
+/* עיצוב המפריד */
+.divider {
+    width: 10%; /* קו חוצץ צר */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.divider-line {
+    width: 1px;
+    height: 70px; /* קו ארוך יותר */
+    background-color: #ccc;
+}
+
+.divider-text {
+    font-size: 18px; /* כיתוב גדול יותר */
+    color: #888;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+/* עיצוב צד רישום */
+.signup-section {
+    width: 45%; /* הרחבת רוחב */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup-button {
+    background-color: #28a745;
+    color: #fff;
+    padding: 12px 20px; /* כפתור גדול יותר */
+    border: none;
+    border-radius: 6px;
+    font-size: 16px; /* פונט גדול יותר */
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+}
+
+.signup-button:hover {
+    background-color: #218838;
+}

@@ -1,0 +1,59 @@
+/* עיצוב הקונטיינר הראשי */
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* גובה מלא */
+    background-color: #f4f6f9; /* רקע אפור בהיר */
+    padding: 20px;
+    box-sizing: border-box;
+    background-image: 
+    url("M:/AngularProject/public/2.png");
+  }
+  
+  /* כרטיס ההרשמה */
+  .card {
+    width: 100%;
+    max-width: 500px; /* מגבלת רוחב */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* צל עדין */
+    background-color: #fff; /* רקע לבן */
+  }
+  
+  /* כותרת ההרשמה */
+  .register-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #0e0e0f;
+  }
+  
+  /* עיצוב השדות */
+  .field {
+    margin-bottom: 20px;
+  }
+  
+  .field input {
+    width: 100%;
+  }
+  
+  /* עיצוב הכפתור */
+  .register-button {
+    width: 100%;
+    background-color: #0c0c0c; /* צבע כחול */
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .register-button:hover {
+    background-color: #696b6b; /* גוון כהה יותר */
+  }
+  
